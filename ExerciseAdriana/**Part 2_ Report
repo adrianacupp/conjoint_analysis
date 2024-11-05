@@ -1,0 +1,55 @@
+# Part 2: Ensure Data are consisent and clean
+
+## Key Observations from the Questionnaire
+
+### Conditional and Skipped Sections:
+
+**S08a Condition**: This variable determines whether respondents are categorized as only drinkers, only purchasers, both, or neither. Based on this categorization, certain questions are skipped:
+**P02a and P02b** (Brand performance - price and non-price loops) are skipped for "only drinkers" (when S08a = 2). Other sections also have conditional logic based on responses in prior questions.
+
+Analysis: missing values in P02a and P02b are expected for S08a = 2
+For analyses involving these fields, filter out rows where S08a = 2 to focus only on respondents who were asked these questions.
+
+High missing values in P02a and P02b may be due to the S08a = 2 condition, meaning "only drinkers" skip these questions. For data quality, missing values here should not be considered an issue if they align with this conditional logic.
+There are also missing values in P02a and P02b where S08a = 3 or S08a = 4, suggesting these responses may need further review to ensure consistency.
+
+
+### Screeners:
+
+**The screener section (S01-S05)** contains specific criteria for terminating respondents based on their demographics or purchasing habits. For example:
+S01 Gender: If a respondent selects "Prefer not to answer," they’re screened out.
+No "Prefer not to answer" present in the data: only Female or Male.
+
+### Loops and Follow-up Questions:
+
+**P02a and P02b** are looped for selected brands (up to 5) based on choices in S10 (Brand Consideration). This means not every respondent will have data in these fields, depending on the number of brands considered.
+
+52 respondents have responses in P02b fields that do not align with the number of brands they selected in S10. These respondents may have provided more responses in P02b than the number of brands they selected in S10.
+
+How to address? Impose Limitations: If required for analysis, you could limit the P02b responses to match the brand count in S10 by setting excess responses to NaN.
+Flag for Review: Alternatively, flag these records for manual review or correction if possible.
+
+
+### Demographic and Behavioral Segmentation:
+
+**The demographic section (D01-D07)** captures household size, employment, education, and behavioral changes in response to inflation. These questions are essential for segmenting respondents and may impact filtering if values are missing.
+
+Columns like D04xUS, D04xZA, D04xDE, etc., each have 181 missing values, which might imply they are entirely unused in the dataset or were not applicable to certain respondents.
+
+
+### Special Categories:
+
+Some questions are multi-choice with exclusive options, such as "None" or "Prefer not to answer." 
+For instance:
+S09 (Brand Awareness): Respondents can select "None" or "Other," which are exclusive.
+S13 (Brand Rejection): Contains a follow-up question S13a if a specific brand (e.g., CLIENT BRAND) is rejected.
+
+Exclusive Options: Ensure that responses with options like "None" or "Prefer not to answer" are handled correctly, as these can impact the validity of other responses in the same question.
+
+none_selected_with_others or other_selected_with_others in S09 (Brand Awareness),
+
+S13. Ensures S13a responses are only present when the CLIENT BRAND rejection condition is met.
+Helps identify any inconsistent data entries in S13a, which would indicate potential data quality issues.
+
+with do not know the exact CLIENT BRAND.
+Each S13_# column is temporarily assumed to be the CLIENT BRAND. For each assumption, the code checks if there are any rows where other brands were rejected (non-null entries in other S13 columns) while the assumed CLIENT BRAND column was not marked as rejected.
