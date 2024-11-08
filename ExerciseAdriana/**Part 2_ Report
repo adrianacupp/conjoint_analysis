@@ -5,11 +5,15 @@
 ### Conditional and Skipped Sections:
 
 **S08a Condition**: This variable determines whether respondents are categorized as only drinkers, only purchasers, both, or neither. Based on this categorization, certain questions are skipped:
-**P02a and P02b** (Brand performance - price and non-price loops) are skipped for "only drinkers" (when S08a = 2). Other sections also have conditional logic based on responses in prior questions.
+**P02a and P02b** (Brand performance - price and non-price loops) are skipped for "only drinkers" (when S08a = 2). 
 
-Analysis: missing values in P02a and P02b are expected for S08a = 2
+Other sections also have conditional logic based on responses in prior questions.
+
+Analysis: 
+Missing values in P02a and P02b are expected for S08a = 2
 For analyses involving these fields, filter out rows where S08a = 2 to focus only on respondents who were asked these questions.
 
+Interpretation: 
 High missing values in P02a and P02b may be due to the S08a = 2 condition, meaning "only drinkers" skip these questions. For data quality, missing values here should not be considered an issue if they align with this conditional logic.
 There are also missing values in P02a and P02b where S08a = 3 or S08a = 4, suggesting these responses may need further review to ensure consistency.
 
@@ -39,7 +43,8 @@ Columns like D04xUS, D04xZA, D04xDE, etc., each have 181 missing values, which m
 
 ### Special Categories:
 
-Some questions are multi-choice with exclusive options, such as "None" or "Prefer not to answer." 
+Some questions are multi-choice with exclusive options, such as "None" or "Prefer not to answer."
+
 For instance:
 S09 (Brand Awareness): Respondents can select "None" or "Other," which are exclusive.
 S13 (Brand Rejection): Contains a follow-up question S13a if a specific brand (e.g., CLIENT BRAND) is rejected.
